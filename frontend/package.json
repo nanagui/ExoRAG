@@ -1,0 +1,33 @@
+{
+  "name": "exoai-dashboard",
+  "version": "0.1.0",
+  "private": true,
+  "description": "React dashboard for the Exoplanet AI validator",
+  "scripts": {
+    "prepare-media": "node scripts/prepare-media.js",
+    "dev": "npm run prepare-media && vite",
+    "build": "vite build",
+    "preview": "vite preview --port 4173",
+    "lint": "eslint src --ext ts,tsx"
+  },
+  "dependencies": {
+    "axios": "^1.7.7",
+    "plotly.js": "^2.35.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-plotly.js": "^2.6.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.5",
+    "@types/react-dom": "^18.3.2",
+    "@typescript-eslint/eslint-plugin": "^8.5.0",
+    "@typescript-eslint/parser": "^8.5.0",
+    "@vitejs/plugin-react": "^4.3.0",
+    "eslint": "^9.9.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-react-hooks": "^5.0.0",
+    "eslint-plugin-react-refresh": "^0.4.9",
+    "typescript": "^5.5.4",
+    "vite": "^5.4.8"
+  }
+}

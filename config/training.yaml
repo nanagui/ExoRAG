@@ -1,0 +1,39 @@
+# Default training configuration for Exoplanet AI classifier
+seed: 42
+batch_size: 64
+sequence_length: 2000
+num_workers: 8
+max_epochs: 20
+accumulate_grad_batches: 1
+precision: 16
+
+optimizer:
+  learning_rate: 0.0001
+  weight_decay: 1.0e-05
+
+cnn:
+  in_channels: 2
+  conv_channels: [32, 64, 128]
+  kernel_sizes: [7, 5, 3]
+  pool_size: 2
+  dropout: 0.1
+
+lstm:
+  hidden_size: 128
+  num_layers: 1
+  dropout: 0.1
+
+physics_loss:
+  weight: 0.1
+  epsilon: 1.0e-06
+
+trainer:
+  gpus: 1
+  log_every_n_steps: 10
+  gradient_clip_val: 1.0
+  checkpoints_dir: data/artifacts/checkpoints
+
+paths:
+  train_manifest: data/manifests/train.jsonl
+  val_manifest: data/manifests/val.jsonl
+  test_manifest: data/manifests/test.jsonl

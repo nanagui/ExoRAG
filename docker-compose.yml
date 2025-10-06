@@ -1,0 +1,58 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: exoai-api
+    restart: unless-stopped
+    environment:
+      EXOAI_DEBUG: "false"
+      EXOAI_DATABASE_URL: postgresql+psycopg://exoai:exoai@postgres:5432/exoai
+      EXOAI_QDRANT_URL: http://qdrant:6333
+      EXOAI_MODEL_CHECKPOINT_PATH: /workspace/models/best.ckpt
+      EXOAI_RAG_CORPUS_DIR: /workspace/corpus
+      EXOAI_LOG_LEVEL: INFO
+    volumes:
+      - ./data:/workspace/data
+      - ./models:/workspace/models
+      - ./corpus:/workspace/corpus
+    ports:
+      - "18000:8000"
+    depends_on:
+      - postgres
+      - qdrant
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    container_name: exoai-frontend
+    restart: unless-stopped
+    ports:
+      - "15173:5173"
+    environment:
+      VITE_API_BASE_URL: http://api:8000
+    depends_on:
+      - api
+
+  qdrant:
+    image: qdrant/qdrant:v1.10.0
+    container_name: exoai-qdrant
+    restart: unless-stopped
+    ports:
+      - "16333:6333"
+    volumes:
+      - ./data/qdrant:/qdrant/storage
+
+  postgres:
+    image: postgres:15
+    container_name: exoai-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: exoai
+      POSTGRES_PASSWORD: exoai
+      POSTGRES_DB: exoai
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+    ports:
+      - "15432:5432"
